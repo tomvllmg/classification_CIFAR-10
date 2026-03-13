@@ -1,6 +1,8 @@
 import torch
 import torch.nn as nn
 
+# il faut surement changer les entrees car elles sont pas bon pour notre dataset
+
 class CNNClassif(nn.Module):
     def __init__(self, input_size_linear, num_channels1=16, num_channels2=32, num_classes=10):
         super(CNNClassif, self).__init__()
