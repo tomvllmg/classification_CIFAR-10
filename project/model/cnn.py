@@ -18,7 +18,7 @@ class CNNClassif(nn.Module):
         out_nb_channels = num_channels1 
         self.hidden_layers = []
         
-        for i in range(1, self.nb_hidden_layers)
+        for i in range(1, self.nb_hidden_layers):
             layers = nn.Sequential(nn.Conv2d(out_nb_channels, out_nb_channels * 2, kernel_size=5, padding=2), nn.ReLU(), nn.MaxPool2d(kernel_size=2))
             self.hidden_layers.append(layers)
             out_nb_channels = out_nb_channels * 2
