@@ -1,10 +1,5 @@
 import torch
 import torch.nn as nn
-from torchvision import transforms, datasets
-from torch.utils.data import DataLoader, Subset
-import numpy as np
-import matplotlib.pyplot as plt
-import copy
 
 class CNNClassif(nn.Module):
     def __init__(self, input_size_linear, num_channels1=16, num_channels2=32, num_classes=10):
