@@ -38,7 +38,6 @@ def train_val_classifier(model, train_dataloader, valid_dataloader, num_epochs, 
     # Initialize a list for storing the training loss over epochs
     train_losses = []
 
-    # LAB 4.1 init
     best_acc = 0
     best_model = None
     list_acc =[]
