@@ -3,7 +3,7 @@ from omegaconf import DictConfig
 import torch
 
 # Importation des modules internes
-from project.model.cnn import CNN # Ou le nom de votre classe modèle
+from project.model.cnn import CNNClassif
 from project.data.dataset import get_dataloaders # Fonction fictive pour charger CIFAR-10
 from project.losses.build_loss import build_loss
 from project.optimizers.build_optimizer import build_optimizer
