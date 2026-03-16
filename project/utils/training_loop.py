@@ -38,3 +38,26 @@ def training_classifier(model, train_dataloader, num_epochs, loss_fn, optimizer,
         train_losses.append(tr_loss)
 
     return model_tr, train_losses
+
+
+# Eval function
+
+def eval_cnn_classifier(model, eval_dataloader):
+
+    # Set the model in evaluation mode
+    model.eval()
+
+    # In test phase, we don't need to compute gradients (for memory efficiency)
+    with torch.no_grad():
+        # initialize the total and correct number of labels to compute the accuracy
+        correct = 0
+        total = 0
+        for images, labels in eval_dataloader:
+            y_predicted = model(images)
+            _, label_predicted = torch.max(y_predicted.data, 1)
+            total += labels.size(0)
+            correct += (label_predicted == labels).sum().item()
+
+    accuracy = 100 * correct / total
+
+    return accuracy
