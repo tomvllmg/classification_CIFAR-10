@@ -1,4 +1,7 @@
-# Attention icic il n'y a pas le choiix de l'opti et du scheduler
+# ======================================================================================================
+# Comme on veut de l'early stopping ce fichier ests inutile : on fait l'early stopping dan sl'autre fichier 
+# ======================================================================================================
+
 
 def training_classifier(model, train_dataloader, num_epochs, loss_fn, optimizer, verbose=True):
 
