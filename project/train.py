@@ -4,7 +4,7 @@ import torch
 
 # Importation des modules internes
 from project.model.cnn import CNNClassif
-from project.data.dataset import get_dataloaders # Fonction fictive pour charger CIFAR-10
+from project.data.dataset import get_dataloaders
 from project.losses.build_loss import build_loss
 from project.optimizers.build_optimizer import build_optimizer
 from project.schedulers.build_schedulers import build_scheduler
@@ -46,7 +46,7 @@ def main(cfg: DictConfig):
         criterion=criterion,
         optimizer=optimizer,
         scheduler=scheduler,
-        epochs=cfg.epochs, # Défini dans votre config.yaml principal
+        epochs=cfg.epochs,
         device=device
     )
     
