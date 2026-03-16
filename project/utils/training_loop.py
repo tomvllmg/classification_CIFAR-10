@@ -1,6 +1,6 @@
 # Attention icic il n'y a pas le choiix de l'opti et du scheduler
 
-def training_classifier(model, train_dataloader, num_epochs, loss_fn, learning_rate, verbose=True):
+def training_classifier(model, train_dataloader, num_epochs, loss_fn, optimizer, verbose=True):
 
     # Make a copy of the model (avoid changing the model outside this function)
     model_tr = copy.deepcopy(model)
@@ -8,8 +8,7 @@ def training_classifier(model, train_dataloader, num_epochs, loss_fn, learning_r
     # Set the model in 'training' mode (ensures all parameters' gradients are computed - it's like setting 'requires_grad=True' for all parameters)
     model_tr.train()
 
-    # Define the optimizer
-    optimizer = torch.optim.SGD(model_tr.parameters(), lr=learning_rate)
+    # The optimizer is defined in the build optimizer
 
     # Initialize a list for storing the training loss over epochs
     train_losses = []
