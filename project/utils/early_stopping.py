@@ -25,7 +25,7 @@ def eval_cnn_classifier(model, eval_dataloader):
 
 # Training with vlidation
 
-def train_val_classifier(model, train_dataloader, valid_dataloader, num_epochs, loss_fn, learning_rate, verbose=True):
+def train_val_classifier(model, train_dataloader, valid_dataloader, num_epochs, loss_fn, optimizer, verbose=True):
 
     # Make a copy of the model (avoid changing the model outside this function)
     model_tr = copy.deepcopy(model)
@@ -33,8 +33,7 @@ def train_val_classifier(model, train_dataloader, valid_dataloader, num_epochs, 
     # Set the model in 'training' mode (ensures all parameters' gradients are computed - it's like setting 'requires_grad=True' for all parameters)
     model_tr.train()
 
-    # Define the optimizer
-    optimizer = torch.optim.Adam(model_tr.parameters(), lr=learning_rate)
+    # The optimizer is defined in the build with the learning rate
 
     # Initialize a list for storing the training loss over epochs
     train_losses = []
