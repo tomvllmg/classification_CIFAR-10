@@ -47,7 +47,7 @@ def get_dataloaders(cfg_data):
         pin_memory=True     # Optimisation pour accélérer le transfert des données vers la carte graphique (GPU)
     )
     
-    val_loader = DataLoader(
+    test_loader = DataLoader(
         test_dataset, 
         batch_size=batch_size, 
         shuffle=False,      # Pas besoin de mélanger pour la validation
