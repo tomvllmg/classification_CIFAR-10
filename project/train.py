@@ -3,8 +3,8 @@ from omegaconf import DictConfig
 
 @hydra.main(
   version_base=None,
-  config_path="config1",
-  config_name="config2"
+  config_path="config",
+  config_name="config"
 )
 def main(cfg: DictConfig):
   print(cfg)
