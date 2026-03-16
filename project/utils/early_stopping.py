@@ -25,7 +25,7 @@ def eval_cnn_classifier(model, eval_dataloader):
 
 # Training with vlidation
 
-def train_val_classifier(model, train_dataloader, valid_dataloader, num_epochs, loss_fn, optimizer, verbose=True):
+def train_val_classifier(model, train_dataloader, valid_dataloader, num_epochs, loss_fn, learning_rate, verbose=True):
 
     # Make a copy of the model (avoid changing the model outside this function)
     model_tr = copy.deepcopy(model)
@@ -33,14 +33,19 @@ def train_val_classifier(model, train_dataloader, valid_dataloader, num_epochs, 
     # Set the model in 'training' mode (ensures all parameters' gradients are computed - it's like setting 'requires_grad=True' for all parameters)
     model_tr.train()
 
-    # The optimizer is defined in the build with the learning rate
+    # Define the optimizer
+    optimizer = torch.optim.Adam(model_tr.parameters(), lr=learning_rate)
 
     # Initialize a list for storing the training loss over epochs
     train_losses = []
 
+    # EARLY STOPPING
     best_acc = 0
     best_model = None
     list_acc =[]
+    
+    patience = 10  # Nombre d'epoch à attendre sans amélioration =====> ON PEUT LE PASSER EN PARA SI Jamais
+    epochs_without_improvement = 0
 
     # Training loop
     for epoch in range(num_epochs):
@@ -71,6 +76,7 @@ def train_val_classifier(model, train_dataloader, valid_dataloader, num_epochs, 
         if verbose:
             print('Epoch [{}/{}], Training loss: {:.4f}'.format(epoch+1, num_epochs, tr_loss))
 
+        # LAB 4.1
         accuracy = eval_cnn_classifier(model_tr, valid_dataloader)
         list_acc.append(accuracy)
 
@@ -78,10 +84,16 @@ def train_val_classifier(model, train_dataloader, valid_dataloader, num_epochs, 
         if accuracy > best_acc:
           best_acc = accuracy
           best_model = copy.deepcopy(model_tr)
+          epochs_without_improvement = 0  # On a progressé, on remet le compteur à zéro
+        else:
+            epochs_without_improvement += 1 # Pas de progrès, on incrémente
 
-    torch.save(best_model, 'model_classif_val_train.pt')
+        # CONDITION D'ARRÊT PRÉCOCE
+        if epochs_without_improvement >= patience:
+            if verbose:
+                print(f"Early stopping déclenché à l'époque {epoch+1}")
+            break  # On sort de la boucle 'for epoch'
+
+    torch.save(best_model, 'model_mlp_classif_val_train.pt')
 
     return best_model, train_losses, list_acc
-
-
-
