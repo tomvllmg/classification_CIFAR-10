@@ -1,6 +1,30 @@
 # Attention  il faut split le train_data en  Define the validation set by splitting the training data into 2 subsets (80% training and 20% validation)
 
 
+# Eval function
+
+def eval_cnn_classifier(model, eval_dataloader):
+
+    # Set the model in evaluation mode
+    model.eval()
+
+    # In test phase, we don't need to compute gradients (for memory efficiency)
+    with torch.no_grad():
+        # initialize the total and correct number of labels to compute the accuracy
+        correct = 0
+        total = 0
+        for images, labels in eval_dataloader:
+            y_predicted = model(images)
+            _, label_predicted = torch.max(y_predicted.data, 1)
+            total += labels.size(0)
+            correct += (label_predicted == labels).sum().item()
+
+    accuracy = 100 * correct / total
+
+    return accuracy
+
+# Training with vlidation
+
 def train_val_classifier(model, train_dataloader, valid_dataloader, num_epochs, loss_fn, learning_rate, verbose=True):
 
     # Make a copy of the model (avoid changing the model outside this function)
@@ -62,24 +86,4 @@ def train_val_classifier(model, train_dataloader, valid_dataloader, num_epochs, 
     return best_model, train_losses, list_acc
 
 
-# Eval function
 
-def eval_cnn_classifier(model, eval_dataloader):
-
-    # Set the model in evaluation mode
-    model.eval()
-
-    # In test phase, we don't need to compute gradients (for memory efficiency)
-    with torch.no_grad():
-        # initialize the total and correct number of labels to compute the accuracy
-        correct = 0
-        total = 0
-        for images, labels in eval_dataloader:
-            y_predicted = model(images)
-            _, label_predicted = torch.max(y_predicted.data, 1)
-            total += labels.size(0)
-            correct += (label_predicted == labels).sum().item()
-
-    accuracy = 100 * correct / total
-
-    return accuracy
