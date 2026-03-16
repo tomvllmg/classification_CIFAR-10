@@ -1,1 +1,5 @@
+#config/optimizer/adam.yaml
 
+name : adam
+param :
+  lr: 0.0001
