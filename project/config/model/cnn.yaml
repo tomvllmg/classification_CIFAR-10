@@ -1,7 +1,7 @@
 # config/model/cnn.yaml
 
 name: cnn
-input_size_linear: 1
-nb_hidden_layers: 1
-num_channels1: 1
+input_size_linear: 1568
+nb_hidden_layers: 2
+num_channels1: 16
 num_classes: 10
