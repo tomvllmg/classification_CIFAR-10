@@ -1,6 +1,6 @@
 # Attention icic il n'y a pas le choiix de l'opti et du scheduler
 
-def training_cnn_classifier(model, train_dataloader, num_epochs, loss_fn, learning_rate, verbose=True):
+def training_classifier(model, train_dataloader, num_epochs, loss_fn, learning_rate, verbose=True):
 
     # Make a copy of the model (avoid changing the model outside this function)
     model_tr = copy.deepcopy(model)
