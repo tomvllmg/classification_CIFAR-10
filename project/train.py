@@ -1,6 +1,7 @@
 import hydra
 from omegaconf import DictConfig
 import torch
+import wandb
 
 # Importation des modules internes
 from project.model.cnn import CNNClassif
