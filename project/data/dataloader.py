@@ -1,78 +1,57 @@
 import torch
-import copy
-from torchvision import datasets, transforms
-from torch.utils.data import DataLoader, random_split
+import torchvision
+import torchvision.transforms as transforms
+from torch.utils.data import DataLoader, Subset
 
-def get_dataloaders(cfg_data):
-    data_dir = cfg_data.get("data_dir", "./data")
-    batch_size = cfg_data.get("batch_size", 128)
-    num_workers = cfg_data.get("num_workers", 2)
-    use_aug = cfg_data.get("use_augmentation", True) # Récupération du choix YAML
-
-    # --- 1. Définition des transformations ---
+def build_dataloaders(cfg_data, cfg_aug):
+    # Tes valeurs exactes de normalisation !
+    normalize = transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2470, 0.2435, 0.2616))
     
-    # Transformation de base (toujours nécessaire)
-    base_transform = [
-        transforms.ToTensor(),
-        transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
-    ]
-
-    # Ajout de l'augmentation si demandé
-    aug_transform = []
-    if use_aug:
-        aug_transform = [
-            transforms.RandomCrop(32, padding=4),
+    val_transform = transforms.Compose([transforms.ToTensor(), normalize])
+    
+    # Gestion de l'augmentation
+    if cfg_aug.get("name") == "basic":
+        train_transform = transforms.Compose([
             transforms.RandomHorizontalFlip(),
-        ]
+            transforms.ToTensor(),
+            normalize
+        ])
+    else:
+        train_transform = val_transform # Pas d'augmentation
+
+    # 1. Chargement des données brutes
+    dataset_train_aug = torchvision.datasets.CIFAR10(root=cfg_data.data_dir, train=True, download=True, transform=train_transform)
+    dataset_val_clean = torchvision.datasets.CIFAR10(root=cfg_data.data_dir, train=True, download=True, transform=val_transform)
+    dataset_test = torchvision.datasets.CIFAR10(root=cfg_data.data_dir, train=False, download=True, transform=val_transform)
+
+    # 2. Le Split 80/20
+    num_train = len(dataset_train_aug)
+    split = int(0.8 * num_train)
     
-    # On compose les deux listes
-    transform_train = transforms.Compose(aug_transform + base_transform)
-    transform_test = transforms.Compose(base_transform)
-
-    # --- 2. Chargement et Split ---
-
-    # On charge le dataset complet d'entraînement
-    full_train_dataset = datasets.CIFAR10(
-        root=data_dir, train=True, download=True, transform=transform_train
-    )
+    torch.manual_seed(42)
+    indices = torch.randperm(num_train).tolist()
+    train_idx, valid_idx = indices[:split], indices[split:]
     
-    # Split 80/20
-    n_train = int(len(full_train_dataset) * 0.8)
-    n_val = len(full_train_dataset) - n_train
+    # ==========================================
+    # L'ASTUCE POUR LE CPU (Fast Dev Run)
+    # ==========================================
+    if cfg_data.get("debug_mode", False):
+        print("⚠️ DEBUG MODE ACTIF : Utilisation d'un sous-échantillon des données (CPU Friendly)")
+        # On ne garde que les 800 premiers du train, 200 du valid
+        train_idx = train_idx[:800]
+        valid_idx = valid_idx[:200]
+        
+        # Et on bride le test set à 100
+        test_indices = torch.arange(100).tolist()
+        dataset_test = Subset(dataset_test, test_indices)
+
+    # 3. Création des subsets pour Train et Valid
+    train_subset = Subset(dataset_train_aug, train_idx)
+    valid_subset = Subset(dataset_val_clean, valid_idx)
+
+    # 4. DataLoaders
+    train_loader = DataLoader(train_subset, batch_size=cfg_data.batch_size, shuffle=True)
+    valid_loader = DataLoader(valid_subset, batch_size=cfg_data.batch_size, shuffle=False)
+    test_loader = DataLoader(dataset_test, batch_size=cfg_data.batch_size, shuffle=False)
     
-    # On utilise un générateur avec une seed fixe si on veut de la reproductibilité
-    train_subset, val_subset = random_split(
-        full_train_dataset, [n_train, n_val], 
-        generator=torch.Generator().manual_seed(42)
-    )
-
-    # ASTUCE : Pour que la validation n'ait PAS d'augmentation de données
-    # Le random_split garde le 'transform' du dataset parent. On force celui de test sur la validation.
-    val_subset = copy.deepcopy(val_subset) # Optionnel mais propre
-    val_subset.dataset.transform = transform_test 
-    # Attention: dans certains cas complexes, changer val_subset.dataset.transform impacte train_subset.
-    # Si c'est le cas, la méthode la plus robuste est de créer deux datasets identiques au départ 
-    # et d'appliquer les indices du split.
-
-    test_dataset = datasets.CIFAR10(
-        root=data_dir, train=False, download=True, transform=transform_test
-    )
-
-    # --- 3. Création des DataLoaders ---
-
-    train_loader = DataLoader(
-        train_subset, batch_size=batch_size, shuffle=True, 
-        num_workers=num_workers, pin_memory=True
-    )
-    
-    val_loader = DataLoader(
-        val_subset, batch_size=batch_size, shuffle=False, 
-        num_workers=num_workers, pin_memory=True
-    )
-
-    test_loader = DataLoader(
-        test_dataset, batch_size=batch_size, shuffle=False, 
-        num_workers=num_workers, pin_memory=True
-    )
-
-    return train_loader, val_loader, test_loader
+    return train_loader, valid_loader, test_loader
