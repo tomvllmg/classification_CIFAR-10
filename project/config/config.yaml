@@ -1,13 +1,30 @@
-defaults:
- - model: cnn
- - optimizer: adam
- - scheduler: step
- - loss: cross_entropy
- - augmentation: none
- - early_stopping: off
+# ==========================================
+# Fichier principal : config/config.yaml
+# ==========================================
 
- training:
-  batch_size: 32
-  epochs: 10
-  lr: 0.001
-  activation: ReLU
+# 1. LES BLOCS DE CONSTRUCTION (Defaults)
+# Hydra va chercher les fichiers correspondants dans les sous-dossiers.
+defaults:
+  - model: cnn_classif
+  - loss: cross_entropy
+  - optimizer: adam
+  - scheduler: step_lr      # Tu peux mettre "none" si tu ne veux pas de scheduler au début
+  - augmentation: none      # "none" ou "basic"
+  - _self_                  # Indispensable pour que Hydra lise la suite de ce fichier
+
+# 2. PARAMÈTRES D'ENTRAÎNEMENT GLOBAUX
+training:
+  epochs: 50
+  patience: 10              # Pour déclencher l'Early Stopping
+  verbose: true
+
+# 3. PARAMÈTRES DES DONNÉES (CIFAR-10)
+data:
+  batch_size: 64
+  data_dir: "./data"
+  debug_mode: true          # L'astuce CPU : True (800 images) | False (50 000 images)
+
+# 4. WEIGHTS & BIASES (Pour la prochaine étape !)
+wandb:
+  project: "projet-framework-cifar10"  # Le nom de ton projet sur le site W&B
+  run_name: "test_cpu_initial"         # Le nom de cette expérience
