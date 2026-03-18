@@ -1,18 +1,10 @@
-#project/losses/build_loss.py
-
-import torch.nn as nn
+from hydra.utils import instantiate
 
 def build_loss(cfg_loss):
     """
-    Construit la fonction de perte.
+    Construit la fonction de perte grâce à l'instanciation dynamique d'Hydra.
     """
-    name = cfg_loss.get("name", "cross_entropy").lower()
-
-    if name == "cross_entropy":
-        return nn.CrossEntropyLoss()
-        
-    elif name == "mse":
-        return nn.MSELoss()
-        
-    else:
-        raise ValueError(f"La fonction de perte '{name}' n'est pas prise en charge.")
+    # On instancie directement l'objet pointé par _target_ dans le YAML avec tous les arguments 
+    loss_fct = instantiate(cfg_loss.param)
+    
+    return loss_fct
