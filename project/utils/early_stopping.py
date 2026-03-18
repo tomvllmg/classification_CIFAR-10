@@ -94,6 +94,9 @@ def train_val_classifier(model, train_dataloader, valid_dataloader, num_epochs, 
             if verbose:
                 print(f"Early stopping déclenché à l'époque {epoch+1}")
             break  # On sort de la boucle 'for epoch'
+            
+        if scheduler is not None:
+            scheduler.step()
 
     torch.save(best_model, 'model_mlp_classif_val_train.pt')
 
