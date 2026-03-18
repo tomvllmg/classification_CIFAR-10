@@ -1,6 +1,6 @@
 # Attention  il faut split le train_data en  Define the validation set by splitting the training data into 2 subsets (80% training and 20% validation)
 # ==============
-# La var patience est ici fixé a 10 dans le code mais on peut la passer en argument si on le rzjoute dans le yaml
+# attention peut etre gerer le device ici 
 
 # Eval function
 
@@ -26,16 +26,7 @@ def eval_cnn_classifier(model, eval_dataloader):
 
 # Training with vlidation
 
-def train_val_classifier(model, train_dataloader, valid_dataloader, num_epochs, loss_fn, learning_rate, verbose=True):
-
-    # Make a copy of the model (avoid changing the model outside this function)
-    model_tr = copy.deepcopy(model)
-
-    # Set the model in 'training' mode (ensures all parameters' gradients are computed - it's like setting 'requires_grad=True' for all parameters)
-    model_tr.train()
-
-    # Define the optimizer
-    optimizer = torch.optim.Adam(model_tr.parameters(), lr=learning_rate)
+def train_val_classifier(model_tr, train_dataloader, valid_dataloader, num_epochs, loss_fn, optimizer, scheduler, patience, verbose=True):
 
     # Initialize a list for storing the training loss over epochs
     train_losses = []
@@ -44,13 +35,12 @@ def train_val_classifier(model, train_dataloader, valid_dataloader, num_epochs, 
     best_acc = 0
     best_model = None
     list_acc =[]
-    
-    patience = 10  # Nombre d'epoch à attendre sans amélioration =====> ON PEUT LE PASSER EN PARA SI Jamais
     epochs_without_improvement = 0
 
     # Training loop
     for epoch in range(num_epochs):
-
+        
+        model_tr.train()
         # Initialize the training loss for the current epoch
         tr_loss = 0
 
