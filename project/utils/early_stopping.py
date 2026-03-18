@@ -1,5 +1,6 @@
 # Attention  il faut split le train_data en  Define the validation set by splitting the training data into 2 subsets (80% training and 20% validation)
-
+# ==============
+# La var patience est ici fixé a 10 dans le code mais on peut la passer en argument si on le rzjoute dans le yaml
 
 # Eval function
 
