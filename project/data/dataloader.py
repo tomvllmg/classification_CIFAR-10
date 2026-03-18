@@ -36,7 +36,6 @@ def build_dataloaders(cfg_data, cfg_aug):
     # L'ASTUCE POUR LE CPU (Fast Dev Run)
     # ==========================================
     if cfg_data.get("debug_mode", False):
-        print("⚠️ DEBUG MODE ACTIF : Utilisation d'un sous-échantillon des données (CPU Friendly)")
         # On ne garde que les 800 premiers du train, 200 du valid
         train_idx = train_idx[:800]
         valid_idx = valid_idx[:200]
