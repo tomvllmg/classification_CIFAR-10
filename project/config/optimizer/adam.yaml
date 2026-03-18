@@ -1,6 +1,5 @@
-#config/optimizer/adam.yaml
-
-name : adam
-param :
+name: adam
+param:
   _target_: torch.optim.Adam
   lr: 0.001
+  weight_decay: 0.0001
