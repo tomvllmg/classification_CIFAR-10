@@ -47,7 +47,7 @@ Le code est structuré de manière claire et modulaire pour garantir une sépara
 ├── sweep.py                 # Script pour l'optimisation Optuna
 ├── requirements.txt         # Dépendances Python
 └── README.md                # Documentation utilisateur.
-```text
+```
 
 ---
 
