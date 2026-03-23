@@ -12,12 +12,12 @@ Lorsque on utilise les CNN, on peut rencontrer un certain nombre de problème, n
 ## Fonctionnalités Implémentées
 
 Conformément aux exigences du projet, ce framework permet dynamiquement de :
-* 🧠 **Changer l'architecture** du réseau de neurones.
-* ⚙️ **Modifier les hyper-paramètres** d'entraînement.
-* 📉 **Choisir l'optimiseur** et le **scheduler de taux d'apprentissage**.
-* 🎯 **Sélectionner la fonction de perte** (loss).
-* 🖼️ **Activer ou modifier des augmentations de données**.
-* 🛑 **Faire de l'early stopping** pour prévenir le surapprentissage.
+*  **Changer l'architecture** du réseau de neurones.
+*  **Modifier les hyper-paramètres** d'entraînement.
+*  **Choisir l'optimiseur** et le **scheduler de taux d'apprentissage**.
+*  **Sélectionner la fonction de perte** (loss).
+*  **Activer ou modifier des augmentations de données**.
+*  **Faire de l'early stopping** pour prévenir le surapprentissage.
 
 ### Outils intégrés
 * **PyTorch pur :** Le framework est codé sans surcouche de haut niveau (pas de pytorch-lightning, fastai, etc.).
@@ -27,7 +27,7 @@ Conformément aux exigences du projet, ce framework permet dynamiquement de :
 
 ---
 
-## 📁 Architecture du Projet
+##  Architecture du Projet
 Le code est structuré de manière claire et modulaire pour garantir une séparation stricte .
 
 ```text
