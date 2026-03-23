@@ -2,6 +2,10 @@
 # ==============
 # attention peut etre gerer le device ici 
 
+import torch
+import copy
+import wandb
+
 # Eval function
 
 def eval_cnn_classifier(model, eval_dataloader):
@@ -70,6 +74,14 @@ def train_val_classifier(model_tr, train_dataloader, valid_dataloader, num_epoch
         # LAB 4.1
         accuracy = eval_cnn_classifier(model_tr, valid_dataloader)
         list_acc.append(accuracy)
+
+        # On envoie les métriques sur le cloud
+        wandb.log({
+            "epoch": epoch + 1,
+            "train_loss": tr_loss,
+            "val_accuracy": accuracy,
+            "learning_rate": optimizer.param_groups[0]['lr'] 
+        })
 
         # Sauvegarder le meilleur modèle
         if accuracy > best_acc:

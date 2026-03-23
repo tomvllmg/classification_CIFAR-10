@@ -37,8 +37,8 @@ def build_dataloaders(cfg_data, cfg_aug):
     # ==========================================
     if cfg_data.get("debug_mode", False):
         # On ne garde que les 800 premiers du train, 200 du valid
-        train_idx = train_idx[:800]
-        valid_idx = valid_idx[:200]
+        train_idx = train_idx[:40000]
+        valid_idx = valid_idx[:10000]
         
         # Et on bride le test set à 100
         test_indices = torch.arange(100).tolist()
