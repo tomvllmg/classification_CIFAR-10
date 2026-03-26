@@ -1,6 +1,7 @@
 import torch
 import torchvision
 import torchvision.transforms as transforms
+from torchvision.transforms import v2
 from torch.utils.data import DataLoader, Subset
 
 def build_dataloaders(cfg_data, cfg_aug):
@@ -10,20 +11,23 @@ def build_dataloaders(cfg_data, cfg_aug):
     Fonction : Construit les dataloaders à partir du dataset d'origine
     '''
     # Valeurs de normalisation
-    normalize = transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2470, 0.2435, 0.2616)) #moyennes et écarts-types de chaque canal calculées sur l'ensemble du dataset CIFAR-10
+    normalize = v2.Normalize((0.4914, 0.4822, 0.4465), (0.2470, 0.2435, 0.2616)) #moyennes et écarts-types de chaque canal calculées sur l'ensemble du dataset CIFAR-10
     
-    val_transform = transforms.Compose([transforms.ToTensor(), normalize])
+    val_transform = v2.Compose([v2.ToImage(), v2.ToDtype(torch.float32, scale=True), normalize])
     
     # Gestion de l'augmentation
     if cfg_aug.get("name") == "basic":
-        train_transform = transforms.Compose([
-            transforms.RandomHorizontalFlip(),
-            transforms.ToTensor(),
-            normalize
+        train_transform = v2.Compose([
+            v2.RandomCrop(32, padding=4),          # Crop aléatoire
+            v2.RandomHorizontalFlip(),             # Miroir 
+            v2.ToImage(),                          
+            v2.ToDtype(torch.float32, scale=True), 
+            normalize                              
         ])
     else:
-        train_transform = val_transform # Pas d'augmentation
+        train_transform = val_transform     # Pas d'augmentation
 
+    
     # Chargement des données brutes
     dataset_train_aug = torchvision.datasets.CIFAR10(root=cfg_data.data_dir, train=True, download=True, transform=train_transform)
     dataset_val_clean = torchvision.datasets.CIFAR10(root=cfg_data.data_dir, train=True, download=True, transform=val_transform)
