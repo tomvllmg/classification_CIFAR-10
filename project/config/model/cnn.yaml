@@ -1,5 +1,3 @@
-# config/model/cnn.yaml
-
 name: cnn
 params:
   nb_hidden_layers: 2
