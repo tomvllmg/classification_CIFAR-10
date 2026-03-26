@@ -4,7 +4,9 @@ from .cnn import CNNClassif
 
 def build_model(cfg_model):
     """
-    Construit le modèle CNNClassif à partir de la configuration.
+    Entrée : Dictionnaire de configuration cfg_model
+    Sortie : Modèle de réseau de neurones (ici un CNN)
+    Fonction : Construit le modèle CNNClassif à partir de la configuration.
     """
     # On vérifie quand même que le YAML demande bien le bon modèle par sécurité
     name = cfg_model.get("name", "cnn_classif").lower()
