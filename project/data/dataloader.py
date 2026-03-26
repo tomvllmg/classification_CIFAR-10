@@ -4,6 +4,11 @@ import torchvision.transforms as transforms
 from torch.utils.data import DataLoader, Subset
 
 def build_dataloaders(cfg_data, cfg_aug):
+    '''
+    Entrées : Dictionnaires de configuration cfg_data, cfg_aug
+    Sorties : Dataloader d'entrainement, de validation et de test
+    Fonction : Construit les dataloaders à partir du dataset d'origine
+    '''
     # Valeurs de normalisation
     normalize = transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2470, 0.2435, 0.2616)) #moyennes et écarts-types de chaque canal calculées sur l'ensemble du dataset CIFAR-10
     
