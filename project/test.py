@@ -5,8 +5,7 @@ import torch
 # Importation de ta fonction pour charger les données
 from data.dataloader import build_dataloaders
 
-# ==============================================================
-# 🛠️ PATCH POUR LA COMPATIBILITÉ HYDRA / PYTHON 3.14
+# Compatibilité Hydra et Python
 import argparse
 orig_expand_help = argparse.HelpFormatter._expand_help
 def patched_expand_help(self, action):
@@ -14,34 +13,30 @@ def patched_expand_help(self, action):
         action.help = str(action.help)
     return orig_expand_help(self, action)
 argparse.HelpFormatter._expand_help = patched_expand_help
-# ==============================================================
 
 @hydra.main(version_base=None, config_path="config", config_name="config")
 def main(cfg: DictConfig):
-    print("\n" + "="*50)
-    print("🧪 ÉVALUATION DU MEILLEUR MODÈLE SUR LE JEU DE TEST")
-    print("="*50)
+    print("ÉVALUATION DU MEILLEUR MODÈLE SUR LE JEU DE TEST")
 
-    # 1. Définition du device (CPU ou GPU)
+    # Définition du device
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Exécution sur : {device}")
 
-    # 2. Chargement UNIQUEMENT du jeu de test
-    # On met "_" pour ignorer le train et le val_loader
+    # Chargement uniquement du jeu de test
     _, _, test_loader = build_dataloaders(cfg.data, cfg.augmentation)
     print(f"Jeu de test chargé : {len(test_loader.dataset)} images prêtes.")
 
-    # 3. Chargement du modèle champion sauvegardé par Optuna
+    # Chargement du modèle champion sauvegardé par Optuna
     try:
         model = torch.load('best_optuna_model.pt', map_location=device, weights_only=False)
-        model.eval() # On passe le modèle en mode évaluation (désactive le dropout, etc.)
-        print("✅ Modèle 'best_optuna_model.pt' chargé avec succès !")
+        model.eval() # On passe le modèle en mode évaluation (désactive le dropout)
+        print("Modèle 'best_optuna_model.pt' chargé avec succès !")
     except FileNotFoundError:
-        print("❌ Erreur : Le fichier 'best_optuna_model.pt' est introuvable.")
+        print("Erreur : Le fichier 'best_optuna_model.pt' est introuvable.")
         print("As-tu bien laissé Optuna terminer au moins un essai ?")
         return
 
-    # 4. Boucle d'évaluation sur le Test Set
+    # Boucle d'évaluation sur le Test Set
     correct = 0
     total = 0
 
@@ -60,9 +55,7 @@ def main(cfg: DictConfig):
 
     # 5. Affichage du score final
     accuracy = 100 * correct / total
-    print("\n" + "🏆 "*10)
     print(f"SCORE FINAL SUR LE JEU DE TEST : {accuracy:.2f}%")
-    print("🏆 "*10 + "\n")
 
 if __name__ == "__main__":
     main()
