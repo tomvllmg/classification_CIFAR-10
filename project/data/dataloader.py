@@ -39,12 +39,12 @@ def build_dataloaders(cfg_data, cfg_aug):
     
     # Choix des indices des dataset d'entrainement et de validation pour réduire le temps de calcul
     if cfg_data.get("debug_mode", False):
-        # On ne garde que les 40000 premiers du train, 10000 du valid
-        train_idx = train_idx[:40000]
-        valid_idx = valid_idx[:10000]
+        # On ne garde que les 16000 premiers du train, 4000 du valid
+        train_idx = train_idx[:16000]
+        valid_idx = valid_idx[:4000]
         
-        # Et on bride le test set à 5000
-        test_indices = torch.arange(5000).tolist()
+        # Et on bride le test set à 1000
+        test_indices = torch.arange(1000).tolist()
         dataset_test = Subset(dataset_test, test_indices)
 
     # Création des subsets pour Train et Valid
