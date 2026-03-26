@@ -100,6 +100,6 @@ def train_val_classifier(model_tr, train_dataloader, valid_dataloader, num_epoch
         if scheduler is not None:
             scheduler.step()
 
-    torch.save(best_model, 'model_mlp_classif_val_train.pt')
+    torch.save(best_model, 'model_classif_val_train.pt')
 
     return best_model, train_losses, list_acc
