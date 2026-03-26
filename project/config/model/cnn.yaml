@@ -1,5 +1,5 @@
 name: cnn
-params:
+param:
   nb_hidden_layers: 2
   num_channels1: 16
   num_classes: 10
