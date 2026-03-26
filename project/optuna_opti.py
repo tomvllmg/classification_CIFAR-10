@@ -4,8 +4,7 @@ import optuna
 import torch
 import wandb
 
-# ==============================================================
-# 🛠️ PATCH POUR LA COMPATIBILITÉ HYDRA / PYTHON 3.14
+# Comptabilité Hydra Python
 import argparse
 orig_expand_help = argparse.HelpFormatter._expand_help
 def patched_expand_help(self, action):
@@ -13,7 +12,6 @@ def patched_expand_help(self, action):
         action.help = str(action.help)
     return orig_expand_help(self, action)
 argparse.HelpFormatter._expand_help = patched_expand_help
-# ==============================================================
 
 from model.cnn import CNNClassif
 from data.dataloader import build_dataloaders
@@ -27,15 +25,14 @@ best_global_accuracy = 0.0
 def objective(trial, cfg: DictConfig):
     global best_global_accuracy
 
-    # 1. OPTUNA CHOISIT LES 2 HYPER-PARAMÈTRES POUR ADAM
+    # Hyperparamètres à optimiser
     lr = trial.suggest_float("lr", 1e-4, 1e-1, log=True)
     weight_decay = trial.suggest_float("weight_decay", 1e-6, 1e-2, log=True)
-
-    # 2. INJECTION DANS LA CONFIG (Chemin exact de ton YAML : optimizer.param.xxx)
+    
     cfg.optimizer.param.lr = lr
     cfg.optimizer.param.weight_decay = weight_decay
 
-    # 3. INITIALISATION DE W&B
+    # Initialisation de wandb
     run_name = f"optuna_T{trial.number}_lr{lr:.4f}_wd{weight_decay:.6f}"
     wandb.init(
         project=cfg.wandb.project,
@@ -44,14 +41,14 @@ def objective(trial, cfg: DictConfig):
         reinit=True 
     )
 
-    # 4. PRÉPARATION DU PIPELINE
+    # Instanciation des dataloaders et du modele depuis les yaml
     train_loader, val_loader, test_loader = build_dataloaders(cfg.data, cfg.augmentation)
     model = CNNClassif(**cfg.model.params)
     criterion = build_loss(cfg.loss)
     optimizer = build_optimizer(cfg.optimizer, model)
     scheduler = build_scheduler(cfg.scheduler, optimizer)
 
-    # 5. ENTRAÎNEMENT
+    # Entrainement 
     best_model, train_losses, list_acc = train_val_classifier(
         model_tr=model,
         train_dataloader=train_loader,
@@ -64,34 +61,30 @@ def objective(trial, cfg: DictConfig):
         verbose=False 
     )
 
-    # 6. FERMETURE W&B
     wandb.finish()
 
     best_accuracy = max(list_acc) if list_acc else 0
 
-    # SAUVEGARDE DU MEILLEUR MODÈLE GLOBAL
+    # Sauvegarde du meilleur modele
     if best_accuracy > best_global_accuracy:
         best_global_accuracy = best_accuracy
         torch.save(best_model, 'best_optuna_model.pt')
-        print(f"🌟 Nouveau record (Trial {trial.number}) : {best_accuracy:.2f}% ! Modèle sauvegardé.")
 
     return best_accuracy
 
 
 @hydra.main(version_base=None, config_path="config", config_name="config")
 def main(cfg: DictConfig):
-    print("\n🚀 OPTIMISATION AUTOMATIQUE (LR & WEIGHT DECAY) AVEC ADAM")
+    print("\n Optimisation des hyperparamètres avec Optuna")
     
     study = optuna.create_study(direction="maximize")
     study.optimize(lambda trial: objective(trial, cfg), n_trials=5)
 
-    print("\n" + "="*50)
-    print("🏆 OPTIMISATION TERMINÉE !")
+    print(" Fin optimisation ")
     print(f"Meilleur essai  : Trial #{study.best_trial.number}")
     print(f"Meilleur score  : {study.best_value:.2f}%")
     print(f"Meilleurs paramètres : {study.best_params}")
-    print("💾 Modèle sauvegardé dans : 'best_optuna_model.pt'")
-    print("="*50 + "\n")
+    print("Modèle sauvegardé dans : 'best_optuna_model.pt'\n")
 
 if __name__ == "__main__":
     main()
