@@ -1,11 +1,9 @@
 import torch
 import torch.nn as nn
 
-# il faut surement changer les entrees car elles sont pas bon pour notre dataset
 class CNNClassif(nn.Module):
 
     def __init__(self, nb_hidden_layers, num_channels1=16, num_classes=10):
-
         super(CNNClassif, self).__init__()
         self.nb_hidden_layers = nb_hidden_layers
         self.cnn_layer1 = nn.Sequential(nn.Conv2d(3, num_channels1, kernel_size=5, padding=2), nn.ReLU(), nn.BatchNorm2d(num_channels1), nn.MaxPool2d(kernel_size=2))
@@ -18,10 +16,9 @@ class CNNClassif(nn.Module):
             self.hidden_layers.append(layers)
             out_nb_channels = out_nb_channels * 2
 
-        self.linear_layer = nn.LazyLinear(num_classes) # Attention lazylinear ne marche pas correctement si on fait un ini_weight comme en Deep L
+        self.linear_layer = nn.LazyLinear(num_classes)
 
     def forward(self, x):
-
         y = self.cnn_layer1(x)
 
         for i in range(0, self.nb_hidden_layers):
