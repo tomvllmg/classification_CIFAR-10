@@ -2,7 +2,9 @@ from hydra.utils import instantiate
 
 def build_loss(cfg_loss):
     """
-    Construit la fonction de perte grâce à l'instanciation dynamique d'Hydra.
+    Entrée : Dictionnaire de configuration cfg_loss
+    Sortie : Fonction de perte
+    Fonction : Construit la fonction de perte grâce à l'instanciation dynamique d'Hydra.
     """
     # On instancie directement l'objet pointé par _target_ dans le YAML avec tous les arguments 
     loss_fct = instantiate(cfg_loss.param)
