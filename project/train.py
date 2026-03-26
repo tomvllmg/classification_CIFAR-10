@@ -4,8 +4,7 @@ import torch
 import wandb
 from torch.utils.data import DataLoader, random_split, Subset
 
-# ==============================================================
-# 🛠️ PATCH INVINCIBLE POUR LA COMPATIBILITÉ HYDRA / PYTHON 3.14
+# Comptabilité Hydra Python
 import argparse
 orig_expand_help = argparse.HelpFormatter._expand_help
 
@@ -16,9 +15,7 @@ def patched_expand_help(self, action):
     return orig_expand_help(self, action)
 
 argparse.HelpFormatter._expand_help = patched_expand_help
-# ==============================================================
 
-# Importation des modules internes
 from model.cnn import CNNClassif
 from data.dataloader import build_dataloaders
 from losses.build_loss import build_loss
@@ -28,11 +25,8 @@ from utils.early_stopping import train_val_classifier
 
 @hydra.main(version_base=None, config_path="config", config_name="config")
 def main(cfg: DictConfig):
-    """
-    Fonction principale exécutée lors du lancement de train.py
-    """
-
-    # === 1. INITIALISATION DE W&B ===
+   
+    # Initialisation wandb
     config_dict = OmegaConf.to_container(cfg, resolve=True)
     wandb.init(
         project=cfg.wandb.project,     
@@ -40,18 +34,15 @@ def main(cfg: DictConfig):
         config=config_dict             
     )
    
-    # === 2. PRÉPARATION DES DONNÉES ===
+    # Instanciation des dataloaders et du modele avec hydra
     train_loader, val_loader, test_loader = build_dataloaders(cfg.data, cfg.augmentation)
-
-    # === 3. CRÉATION DU MODÈLE ===
     model = CNNClassif(**cfg.model.params)
 
-    # === 4. ASSEMBLAGE ===
     criterion = build_loss(cfg.loss)
     optimizer = build_optimizer(cfg.optimizer, model)
     scheduler = build_scheduler(cfg.scheduler, optimizer)
 
-    # === 5. BOUCLE D'ENTRAÎNEMENT ===
+    # Entrainement
     train_val_classifier(
         model,
         train_dataloader=train_loader,
@@ -63,7 +54,6 @@ def main(cfg: DictConfig):
         patience=cfg.training.patience,
     )
 
-    # === 6. FERMETURE W&B ===
     wandb.finish()
 
 if __name__ == "__main__":
