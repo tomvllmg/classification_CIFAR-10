@@ -1,13 +1,11 @@
 # Projet Framework d'Entraînement PyTorch
 
-Ce projet a été réalisé dans le cadre du projet d'apprentissage profond évalué par Sylvain Faisan. 
-
-Il propose un framework minimal d'entraînement en PyTorch, conçu pour être hautement configurable et extensible afin de tester rapidement différentes configurations d'apprentissage profond. L'accent a été mis sur la qualité logicielle, la séparation des responsabilités et la reproductibilité des expériences plutôt que sur l'obtention de performances optimales.
+Le projet est un framework minimal d'entraînement en PyTorch, conçu pour être hautement configurable et extensible afin de tester rapidement différentes configurations d'apprentissage profond. L'accent a été mis sur la qualité logicielle, la séparation des responsabilités et la reproductibilité des expériences plutôt que sur l'obtention de performances optimales.
 
 La tâche de référence implémentée est la classification d'images sur le jeu de données CIFAR-10. Ce dataset a été choisi car il est équilibré (10 classes avec le même nombre d'exemples par classe).
 
 Pour la classification d'image, on utilise les réseaux convolutifs (CNN).
-Lorsque on utilise les CNN, on peut rencontrer un certain nombre de problème, notamment avec le input_size_linear. On a 2 solutions pour cela : faire passer une image avant l'enrtrainement ou modifier la classe avec LazyLinear.
+Lorsque on utilise les CNN, on peut rencontrer un certain nombre de problème, notamment avec le input_size_linear. On a 2 solutions pour cela : faire passer une image avant l'entrainement ou modifier la classe avec LazyLinear.
 
 ## Fonctionnalités Implémentées
 
@@ -50,7 +48,7 @@ Le code est structuré de manière claire et modulaire pour garantir une sépara
 ```
 
 ---
-## Installation 
+## Installation
 
 
 ## Commande bash pour lancer l'entrainement
