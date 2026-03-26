@@ -1,5 +1,5 @@
 #config/activation/relu.yaml
 
 activation :
-  _target_ : torch.nn.ReLU #nom de la classe à instancier
+  _target_ : torch.nn.ReLU 
   inplace : true #paramètre du constructeur
