@@ -18,4 +18,4 @@ data:
 
 wandb:
   project: "projet-framework-cifar10"
-  run_name: "Test W&B"
+  run_name: "Training with W&B"
