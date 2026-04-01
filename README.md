@@ -1,13 +1,26 @@
 # Projet Framework d'Entraînement PyTorch
-## Fonctionnalités Implémentées
 
+## Point de vue utilisateur
+- Entraîner un réseau de neurones (CNN)
+- Utiliser Weight & Biaisses pour visualiser
+- Utiliser Optuna (learning rate)
+
+## Fonctionnalités Implémentées
 Conformément aux exigences du projet, ce framework permet dynamiquement de :
 *  **Changer l'architecture** du réseau de neurones : On peut modifier le nombre de couches cachés, le nombre de input channels.
 *  **Modifier les hyper-paramètres** d'entraînement : On peut modifier le nombre d'epochs, la patience de l'early stopping, la taille du batch, le "debug_mode" pour choisir si on entraîne avec tous le jeu de données de CIFAR-10;
-*  **Choisir l'optimiseur** et le **scheduler de taux d'apprentissage**.
+*  **Choisir l'optimiseur** et le **scheduler de taux d'apprentissage** : On peut choisir entre un optimiseur Adam ou SGD, et un scheduler entre cosine et step_lr.
 *  **Sélectionner la fonction de perte** : On peut choisir entre une fonction CrossEntropy ou MSE.
-*  **Activer des augmentations de données** : Pour activer l'augmentation de données, compiler le script train.py en ajoutant "augmentation = basic"
-*  **Faire de l'early stopping** pour prévenir le surapprentissage.
+*  **Activer des augmentations de données** : Pour activer l'augmentation de données, compiler le script train.py en ajoutant "augmentation = basic".
+*  **Faire de l'early stopping** : On peut modifier la patience.
+
+---
+
+## Code
+- Montrer l'architecture des dossiers/fichiers
+- Utilisation de Hydra pour la config
+- "debug_mode"
+- 
 
 ---
 
