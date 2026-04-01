@@ -9,7 +9,6 @@ import argparse
 orig_expand_help = argparse.HelpFormatter._expand_help
 
 def patched_expand_help(self, action):
-    # Si l'aide est le fameux objet Hydra qui fait planter, on le force en texte
     if action.help is not None and type(action.help).__name__ == 'LazyCompletionHelp':
         action.help = str(action.help)
     return orig_expand_help(self, action)
