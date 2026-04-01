@@ -43,7 +43,7 @@ def objective(trial, cfg: DictConfig):
 
     # Instanciation des dataloaders et du modele depuis les yaml
     train_loader, val_loader, test_loader = build_dataloaders(cfg.data, cfg.augmentation)
-    model = CNNClassif(**cfg.model.params)
+    model = CNNClassif(**cfg.model.param)
     criterion = build_loss(cfg.loss)
     optimizer = build_optimizer(cfg.optimizer, model)
     scheduler = build_scheduler(cfg.scheduler, optimizer)
