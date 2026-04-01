@@ -8,9 +8,8 @@ def build_scheduler(cfg_scheduler, optimizer):
     """
     if cfg_scheduler is None or cfg_scheduler.get("name") == "none":
         return None
-
-    # Hydra instancie la classe (ex: StepLR) et lui passe l'optimiseur 
-    # ainsi que les arguments du YAML (step_size, gamma, etc.)
+ 
+    # Hydra instancie la classe, ainsi que les arguments du YAML.
     scheduler = instantiate(cfg_scheduler.param, optimizer=optimizer)
     
     return scheduler
