@@ -15,20 +15,20 @@ Conformément aux exigences du projet, ce framework permet dynamiquement de :
 Le code est structuré de manière claire et modulaire pour garantir une séparation stricte .
 
 ```text
-├── configs/                 # Fichiers de configuration (Hydra).
+├── configs/                 # Fichiers de configuration.
 │   ├── config.yaml          # Point d'entrée principal.
-│   ├── model/               # Architectures réseaux (ex: resnet.yaml)
-│   ├── optimizer/           # Optimiseurs (ex: adam.yaml, sgd.yaml)
-│   ├── scheduler/           # Schedulers (ex: step_lr.yaml)
-│   ├── loss/                # Fonctions de perte (ex: cross_entropy.yaml)
-│   └── data/                # Paramètres CIFAR-10 et augmentations
+│   ├── model/               # Architectures réseaux.
+│   ├── optimizer/           # Optimiseurs.
+│   ├── scheduler/           # Schedulers.
+│   ├── loss/                # Fonctions de perte.
+│   └── data/                # Paramètres CIFAR-10 et augmentations.
 ├── src/                     # Code source du projet.
-│   ├── models/              # Classes des réseaux de neurones
-│   ├── data/                # Dataloaders et transformations
-│   ├── training/            # Boucle d'entraînement, validation, early stopping
-│   └── utils/               # Loggers (W&B) et métriques
-├── train.py                 # Script principal d'entraînement
-├── sweep.py                 # Script pour l'optimisation Optuna
-├── requirements.txt         # Dépendances Python
+│   ├── models/              # Classes des réseaux de neurones.
+│   ├── data/                # Dataloaders et transformations.
+│   ├── training/            # Boucle d'entraînement, validation, early stopping.
+│   └── utils/               # Loggers (W&B) et métriques.
+├── train.py                 # Script principal d'entraînement.
+├── sweep.py                 # Script pour l'optimisation Optuna.
+├── requirements.txt         # Dépendances Python.
 └── README.md                # Documentation utilisateur.
 ```
