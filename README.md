@@ -10,18 +10,12 @@ Lorsque on utilise les CNN, on peut rencontrer un certain nombre de problème, n
 ## Fonctionnalités Implémentées
 
 Conformément aux exigences du projet, ce framework permet dynamiquement de :
-*  **Changer l'architecture** du réseau de neurones.
-*  **Modifier les hyper-paramètres** d'entraînement.
+*  **Changer l'architecture** du réseau de neurones : On peut modifier le nombre de couches cachés, le nombre de input channels.
+*  **Modifier les hyper-paramètres** d'entraînement : On peut modifier le nombre d'epochs, la patience de l'early stopping, la taille du batch, le "debug_mode" pour choisir si on entraîne avec tous le jeu de données de CIFAR-10;
 *  **Choisir l'optimiseur** et le **scheduler de taux d'apprentissage**.
-*  **Sélectionner la fonction de perte** (loss).
-*  **Activer ou modifier des augmentations de données**.
+*  **Sélectionner la fonction de perte** : On peut choisir entre une fonction CrossEntropy ou MSE.
+*  **Activer des augmentations de données** : Pour activer l'augmentation de données, compiler le script train.py en ajoutant "augmentation = basic"
 *  **Faire de l'early stopping** pour prévenir le surapprentissage.
-
-### Outils intégrés
-* **PyTorch pur :** Le framework est codé sans surcouche de haut niveau (pas de pytorch-lightning, fastai, etc.).
-* **Hydra :**  Gestion avancée et modulaire des fichiers de configuration.
-* **Weights & Biases (W&B) :** Suivi des expériences et sauvegarde en temps réel des courbes d'apprentissage.
-* **Optuna :** Optimisation automatique des hyper-paramètres.
 
 ---
 
