@@ -1,2 +1,2 @@
 name: "basic"
-# Pour l'instant sans parametres mais si on veut coder des transfo genre rotation
+# Augmentation de données effectuée dans dataloader.py
