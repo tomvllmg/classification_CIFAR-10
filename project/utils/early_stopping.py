@@ -63,7 +63,7 @@ def train_val_classifier(model_tr, train_dataloader, valid_dataloader, num_epoch
         accuracy = eval_cnn_classifier(model_tr, valid_dataloader)
         list_acc.append(accuracy)
 
-        # On envoie les métriques sur le cloud
+        
         wandb.log({
             "epoch": epoch + 1,
             "train_loss": tr_loss,
