@@ -53,7 +53,7 @@ def main(cfg: DictConfig):
             total += labels.size(0)
             correct += (predicted == labels).sum().item()
 
-    # 5. Affichage du score final
+    # Affichage du score final
     accuracy = 100 * correct / total
     print(f"SCORE FINAL SUR LE JEU DE TEST : {accuracy:.2f}%")
 
