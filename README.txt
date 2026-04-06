@@ -2,11 +2,12 @@ FRAMEWORK MINIMAL D'ENTRAINEMENT PYTORCH POUR CIFAR-10
 
 DESCRIPTION
 -----------
-L'objectif de ce projet est de concevoir et implémenter un framework minimal d'entraînement en PyTorch, configurable et extensible, permettant de tester rapidement différentes configurations d'apprentissage profond. L'accent est mis sur la qualité logicielle, la structuration du code, la séparation des responsabilités et la reproductibilité des expériences.
+L'objectif de ce projet est de concevoir et implémenter un framework minimal d'entraînement en PyTorch, configurable et extensible, permettant de tester rapidement différentes configurations d'apprentissage profond. 
+L'accent est mis sur la qualité logicielle, la structuration du code, la séparation des responsabilités et la reproductibilité des expériences.
 
 La tâche de référence est la classification d'images sur le jeu de données CIFAR-10.
 
-Ce framework respecte la contrainte d'utiliser du PyTorch pur tout en intégrant nativement :
+Ce framework utilise PyTorch tout en intégrant :
 - Hydra pour la gestion dynamique des configurations YAML et l'instanciation.
 - Weights & Biases (W&B) pour le suivi et la sauvegarde des courbes.
 - Optuna pour une optimisation automatique des hyper-paramètres.
@@ -31,7 +32,6 @@ L'architecture logicielle est modulaire et facilement extensible.
 /utils/                   - early_stopping.py
 train.py                  - Script d'entraînement principal
 optuna_opti.py            - Script d'optimisation (Optuna)
-test.py                   - Script d'évaluation sur le jeu de test
 
 CONFIGURATION PAR DEFAUT
 ------------------------
@@ -94,10 +94,3 @@ Pour rechercher automatiquement les meilleurs hyper-paramètres (le learning rat
 
 Le meilleur modèle trouvé lors des essais sera automatiquement sauvegardé sous le nom best_optuna_model.pt.
 
-
-EVALUATION DU MODELE (TEST)
----------------------------
-Une fois un modèle entraîné (soit par train.py qui génère model_classif_val_train.pt, soit par optuna_opti.py qui génère best_optuna_model.pt), on peut évaluer ses performances sur le jeu de test final. 
-
-Par défaut, test.py cherche le meilleur modèle issu d'Optuna.
-> python test.py data.debug_mode=false
