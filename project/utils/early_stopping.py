@@ -7,7 +7,7 @@ def eval_cnn_classifier(model, eval_dataloader):
     # On passe en mode évaluation
     model.eval()
 
-    # Dans la phase de test on ne calcule pas les gradients pour la mémoire
+    # Dans la phase de test on ne calcule pas les gradients 
     with torch.no_grad():
         # Initialise le nombre total et correct de labels pour calculer la précision
         correct = 0
